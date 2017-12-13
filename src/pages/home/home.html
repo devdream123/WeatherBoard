@@ -1,18 +1,97 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
+    <ion-navbar>
+        <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+        <ion-title>Weather Board</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <h3 text-center>{{weatherData.name}}</h3>
+                <div text-center class="datetime-container">
+                    <div class="datetime">{{weatherData.dt * 1000 | date:'EEEE dd MMM hh:mm a'}}</div>
+                </div>
+            </ion-col>
+        </ion-row>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+        <ion-row>
+            <ion-col col-4>
+                <ion-row class="left-condition-container">
+                    <ion-col col-12 class="condition-content">
+                        <label>Humidity: </label>
+                        <span>{{weatherDataMain.humidity}}%</span>
+                    </ion-col>
+                    <ion-col col-12 class="condition-content">
+                        <label class="pressure">Pressure: </label>
+                        <span>{{weatherDataMain.pressure}}hPa</span>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+            <ion-col col-4>
+                <div text-center class="middle-condition-container">
+                    <div class="condition-content">
+                        <div class="temperature">{{weatherDataMain.temp}}&deg;F</div>
+                        <div class="description" *ngFor="let w of weatherData.weather">{{w.description}}</div>
+                        <div>
+                            <img src="http://openweathermap.org/img/w/{{weatherIcon}}" alt="icon">
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+            <ion-col col-4>
+                <ion-row class="right-condition-container">
+                    <ion-col col-12 class="condition-content">
+                        <label>Min Temp: </label>
+                        <span>{{weatherDataMain.temp_min}}&deg;F</span>
+                    </ion-col>
+                    <ion-col col-12 class="condition-content">
+                        <label>Max Temp:</label>
+                        <span>{{weatherDataMain.temp_max}}&deg;F</span>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+        <ion-scroll scrollX="true" class="center scroll-hourly" no-margin>
+            <ion-row nowrap *ngIf="isToday">
+                <ion-col col-3 *ngFor="let todayForecast of hourlyList">
+                    <p no-margin no-padding>
+                        <span>{{todayForecast.hour}}</span>
+                    </p>
+                    <img no-margin no-padding src="http://openweathermap.org/img/w/{{todayForecast.icon}}.png">
+                    <p no-margin no-padding>
+                        <span>{{todayForecast.temp}}&deg;F</span>
+                    </p>
+                </ion-col>
+            </ion-row>
+        </ion-scroll>
+
+        <ion-row>
+            <ion-col col-4>
+                <ion-list>
+                    <div class="long-forecast-item">
+                        <ion-item>Friday</ion-item>
+                    </div>
+                </ion-list>
+            </ion-col>
+            <ion-col col-4>
+                <ion-list>
+                    <ion-item>Sunny</ion-item>
+                </ion-list>
+            </ion-col>
+            <ion-col col-4>
+                <ion-list>
+                    <ion-item>16</ion-item>
+                    <ion-item>22</ion-item>
+                </ion-list>
+            </ion-col>
+
+        </ion-row>
+
+    </ion-grid>
+
 </ion-content>
