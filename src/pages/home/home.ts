@@ -97,7 +97,7 @@ export class HomePage{
       if(today < forecastDateTxt && forecastFixedHr === "10:00 am"){
        if( forecastDateTxt !== temporary){
          temporary = forecastDateTxt;         
-          this.day = moment(forecastUnixDate).format('ddd');
+          this.day = moment(forecastUnixDate).format('dddd');
           this.daysList.push({
             "unixTime" : forecastElement.dt,
             "day" : this.day,
