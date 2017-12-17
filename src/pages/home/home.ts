@@ -17,7 +17,9 @@ export class HomePage{
   public forecastList = [];
   private forecastWeather:Object = {};
   private hourlyList = [];
+  private daysList = [];
   private hourly ;
+  private day;
   private isToday: boolean;
   private errorMessage:any = '';
   constructor(public navCtrl: NavController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider) {
@@ -25,8 +27,8 @@ export class HomePage{
   }
 
  ionViewWillEnter(){
-  this.getCurrentWeatherByCoord();
-  this.getForecastByCoord();
+    this.getCurrentWeatherByCoord();
+    this.getForecastByCoord();
   }
 
 
@@ -47,42 +49,63 @@ export class HomePage{
        this.forecastList = result.list;
        console.log("this.forecastList: " , this.forecastList);
        this.getHourlyForecast();
+       this.getDaysForecast();
       },
       error => this.errorMessage = <any>error
     );    
   }
   
   private getHourlyForecast():void{
-    let forecastDateTxt ;
-    let now = moment().utc().format('DD-MM-YY hh');
-   // let nextDayForecast;
+    let now = moment().format('DD-MM-YY hh');
+    let forecastUnix;
+    let forecastDateHourTxt ;
     this.forecastList.splice(0,7).forEach(forecastElement => {
-               this.forecastWeather= forecastElement.weather[0]; //array length of weather key always 1
-              // nextDayForecast = moment(this.forecastList[0].dt_txt).add(1,"days").format('DD-MM-YY hh');
-               forecastDateTxt= moment(forecastElement.dt_txt).format('DD-MM-YY hh');
-               //console.log("nextDayForecast: " + nextDayForecast);
-               console.log("now: " ,now );
-               console.log("forecastDateTxt: " ,forecastDateTxt );
-               console.log("now <= forecastDateTxt " ,now <= forecastDateTxt );
-               
-               if(now <= forecastDateTxt ){
-                this.isToday = true;
-                this.hourly = moment(forecastElement.dt_txt).format('h a');
-                this.hourlyList.push({
-                  "hour" : this.hourly,
-                  "temp" : forecastElement.main.temp,
-                  "temp_min" : forecastElement.main.temp_min,
-                  "temp_max" : forecastElement.main.temp_max,
-                  "description" : this.forecastWeather['description'],
-                  "icon" : this.forecastWeather['icon']
-                });
-               }
-              });
+      this.forecastWeather= forecastElement.weather[0]; //array length of weather key always 1
+      forecastUnix = forecastElement.dt * 1000;
+      forecastDateHourTxt= moment(forecastUnix).format('DD-MM-YY hh');
+
+        if(now <= forecastDateHourTxt ){
+        this.isToday = true;
+        this.hourly = moment(forecastUnix).format('h a');
+        this.hourlyList.push({
+          "hour" : this.hourly,
+          "temp" : forecastElement.main.temp,
+          "temp_min" : forecastElement.main.temp_min,
+          "temp_max" : forecastElement.main.temp_max,
+          "description" : this.forecastWeather['description'],
+          "icon" : this.forecastWeather['icon']
+        });
+        }
+    });
   }
 
-  // private getDaysForecast():void{
-    
-  // }
+  private getDaysForecast():void{
+    let forecastDateTxt ;
+    let temporary ="";
+    let forecastUnix;
+    let today = moment().format('DD-MM-YY');
+    this.forecastList.forEach(forecastElement => {
+      this.forecastWeather= forecastElement.weather[0];
+      forecastUnix = forecastElement.dt * 1000;
+      forecastDateTxt= moment(forecastUnix).format('DD-MM-YY');
+
+      if(today < forecastDateTxt){
+       if( forecastDateTxt !== temporary){
+         temporary = forecastDateTxt;
+          this.isToday = true;
+          this.day = moment(forecastUnix).format('dddd');
+          this.daysList.push({
+            "day" : this.day,
+            "temp" : forecastElement.main.temp,
+            "temp_min" : forecastElement.main.temp_min,
+            "temp_max" : forecastElement.main.temp_max,
+            "description" : this.forecastWeather['description'],
+            "icon" : this.forecastWeather['icon']
+          });
+        }
+      }
+    });
+  }
 
 
 }

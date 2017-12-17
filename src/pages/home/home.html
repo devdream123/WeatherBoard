@@ -73,25 +73,25 @@
 
         <label>Long Forecast</label>
         <ion-list class="long-forecast-container">
-            <ion-row>
+            <ion-row *ngFor="let forecast of daysList">
                 <ion-col col-4>
                     <div>
-                        <ion-item no-lines>Friday</ion-item>
+                        <ion-item no-lines>{{forecast.day}}</ion-item>
                     </div>
                 </ion-col>
                 <ion-col col-4>
                     <div>
-                        <ion-item no-lines>Sunny</ion-item>
+                        <ion-item no-lines>{{forecast.description}}</ion-item>
                     </div>
                 </ion-col>
                 <ion-col col-2>
                     <div>
-                        <ion-item no-lines><span class="icon">v</span>16</ion-item>
+                        <ion-item no-lines><span class="icon">v</span>{{forecast.temp_min}}</ion-item>
                     </div>
                 </ion-col>
                 <ion-col col-2>
                     <div>
-                        <ion-item no-lines><span class="icon">^</span>22</ion-item>
+                        <ion-item no-lines><span class="icon">^</span>{{forecast.temp_max}}</ion-item>
                     </div>
                 </ion-col>
             </ion-row>
