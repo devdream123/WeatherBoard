@@ -7,11 +7,11 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content no-padding>
     <ion-grid>
         <ion-row>
             <ion-col col-12>
-                <h3 text-center>{{weatherData.name}}</h3>
+                <h2 text-center>{{weatherData.name}}</h2>
                 <div text-center class="datetime-container">
                     <div class="datetime">{{weatherData.dt * 1000 | date:'EEEE dd MMM hh:mm a'}}</div>
                 </div>
@@ -20,7 +20,7 @@
 
         <ion-row>
             <ion-col col-4>
-                <ion-row class="left-condition-container">
+                <ion-row class="left-condition-container" margin-vertical margin-horizontal>
                     <ion-col col-12 class="condition-content">
                         <label>Humidity: </label>
                         <span>{{weatherDataMain.humidity}}%</span>
@@ -43,7 +43,7 @@
                 </div>
             </ion-col>
             <ion-col col-4>
-                <ion-row class="right-condition-container">
+                <ion-row class="right-condition-container" margin-vertical margin-horizontal>
                     <ion-col col-12 class="condition-content">
                         <label>Min Temp: </label>
                         <span>{{weatherDataMain.temp_min}}&deg;K</span>
@@ -56,9 +56,9 @@
             </ion-col>
         </ion-row>
 
-        <label>Next Few Hours Forecast</label>
-        <ion-scroll scrollX="true" class="center scroll-hourly" no-margin>
-            <ion-row nowrap *ngIf="isToday">
+        <h5 margin-vertical>Next Few Hours Forecast</h5>
+        <ion-scroll scrollX="true" class="center scroll-hourly">
+            <ion-row text-center nowrap *ngIf="isToday" margin-top>
                 <ion-col col-3 *ngFor="let todayForecast of hourlyList">
                     <p no-margin no-padding>
                         <span>{{todayForecast.hour}}</span>
@@ -71,27 +71,24 @@
             </ion-row>
         </ion-scroll>
 
-        <label>Long Forecast</label>
+        <h5 margin-vertical>Long Forecast</h5>
         <ion-list class="long-forecast-container">
             <ion-row *ngFor="let forecast of daysList">
                 <ion-col col-4>
                     <div>
-                        <ion-item no-lines>{{forecast.day}}</ion-item>
+                        <ion-item no-lines text-wrap>{{forecast.day}}</ion-item>
                     </div>
                 </ion-col>
                 <ion-col col-4>
-                    <div>
-                        <ion-item no-lines>{{forecast.description}}</ion-item>
+                    <div text-center>
+                        <img no-margin no-padding src="http://openweathermap.org/img/w/{{forecast.icon}}.png">
+                        <ion-item text-center no-lines text-wrap>{{forecast.description}}</ion-item>
                     </div>
                 </ion-col>
-                <ion-col col-2>
+
+                <ion-col col-4>
                     <div>
-                        <ion-item no-lines><span class="icon">v</span>{{forecast.temp_min}}</ion-item>
-                    </div>
-                </ion-col>
-                <ion-col col-2>
-                    <div>
-                        <ion-item no-lines><span class="icon">^</span>{{forecast.temp_max}}</ion-item>
+                        <ion-item text-center no-lines><span class="icon"></span>{{forecast.temp}}&deg;K</ion-item>
                     </div>
                 </ion-col>
             </ion-row>

@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -48,8 +49,8 @@ export class HomePage{
        this.forecastData = result.city;
        this.forecastList = result.list;
        console.log("this.forecastList: " , this.forecastList);
-       this.getHourlyForecast();
        this.getDaysForecast();
+       this.getHourlyForecast();
       },
       error => this.errorMessage = <any>error
     );    
@@ -57,21 +58,21 @@ export class HomePage{
   
   private getHourlyForecast():void{
     let now = moment().format('DD-MM-YY hh');
-    let forecastUnix;
+    let forecastUnixDate;
     let forecastDateHourTxt ;
     this.forecastList.splice(0,7).forEach(forecastElement => {
       this.forecastWeather= forecastElement.weather[0]; //array length of weather key always 1
-      forecastUnix = forecastElement.dt * 1000;
-      forecastDateHourTxt= moment(forecastUnix).format('DD-MM-YY hh');
+      console.log("forecastElement.dt : " ,forecastElement.dt  );
+
+      forecastUnixDate = forecastElement.dt * 1000;
+      forecastDateHourTxt= moment(forecastUnixDate).format('DD-MM-YY hh');
 
         if(now <= forecastDateHourTxt ){
         this.isToday = true;
-        this.hourly = moment(forecastUnix).format('h a');
+        this.hourly = moment(forecastUnixDate).format('h a');
         this.hourlyList.push({
           "hour" : this.hourly,
           "temp" : forecastElement.main.temp,
-          "temp_min" : forecastElement.main.temp_min,
-          "temp_max" : forecastElement.main.temp_max,
           "description" : this.forecastWeather['description'],
           "icon" : this.forecastWeather['icon']
         });
@@ -82,30 +83,30 @@ export class HomePage{
   private getDaysForecast():void{
     let forecastDateTxt ;
     let temporary ="";
-    let forecastUnix;
+    let forecastUnixDate;
     let today = moment().format('DD-MM-YY');
+    let forecastFixedHr;
     this.forecastList.forEach(forecastElement => {
       this.forecastWeather= forecastElement.weather[0];
-      forecastUnix = forecastElement.dt * 1000;
-      forecastDateTxt= moment(forecastUnix).format('DD-MM-YY');
-
-      if(today < forecastDateTxt){
+      
+      forecastUnixDate = forecastElement.dt *1000;
+      forecastDateTxt= moment(forecastUnixDate).format('DD-MM-YY');
+      forecastFixedHr = moment(forecastUnixDate).format('hh:mm a');
+      
+      /*Due to the api return every 3 hours/5 days forecast, we need to pick an hour within that day to display an approximate weather condition*/
+      if(today < forecastDateTxt && forecastFixedHr === "10:00 am"){
        if( forecastDateTxt !== temporary){
-         temporary = forecastDateTxt;
-          this.isToday = true;
-          this.day = moment(forecastUnix).format('dddd');
+         temporary = forecastDateTxt;         
+          this.day = moment(forecastUnixDate).format('ddd');
           this.daysList.push({
+            "unixTime" : forecastElement.dt,
             "day" : this.day,
             "temp" : forecastElement.main.temp,
-            "temp_min" : forecastElement.main.temp_min,
-            "temp_max" : forecastElement.main.temp_max,
             "description" : this.forecastWeather['description'],
-            "icon" : this.forecastWeather['icon']
+            "icon" :this.forecastWeather['icon']
           });
         }
       }
     });
   }
-
-
 }

@@ -9,9 +9,19 @@ page-home {
     $primary-background-color: $color-dark-blue;
     $primary-font-color: $color-white;
     $secondary-font-color: $color-black;
+    $primary-font-size: 14px;
+    h2 {
+        font-weight: bold;
+    }
+    h5 {
+        padding-top: 16px;
+    }
     ion-content {
         background: $primary-background-color !important;
         color: $primary-font-color! important;
+    }
+    .left-condition-container {
+        font-size: $primary-font-size;
     }
     .middle-condition-container {
         margin: 0 auto;
@@ -22,65 +32,39 @@ page-home {
             color: $secondary-font-color;
         }
     }
-    .left-condition-container {
-        position: absolute;
-        top: $padding-standard;
-        float: right;
-        .condition-content {
-            label,
-            span {
-                padding-bottom: $padding-standard;
-            }
-        }
-    }
     .right-condition-container {
-        position: absolute;
-        top: $padding-standard;
-        float: left;
-        .condition-content {
-            label,
-            span {
-                padding-bottom: $padding-standard;
-            }
-        }
+        font-size: $primary-font-size;
     }
     ion-scroll {
         width: 100%;
         height: 120px;
-        background: $secondary-background-color;
-        margin-top: $margin-standard !important;
-        margin-bottom: $margin-standard !important;
-        border: 1px solid white;
+        background: transparent; //$secondary-background-color;
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
         //border-radius: 15px;
         ion-row {
             height: 80px;
-            color: $secondary-font-color;
-            text-align: center;
+            color: $primary-font-color; //$secondary-font-color;
             p {
-                font-size: 10px;
-                font-weight: bold;
+                font-size: $primary-font-size;
+                font-weight: 500;
             }
             img {
                 max-width: 40px;
-                margin: auto 0;
             }
-        }
-    }
-    .long-forecast-item {
-        background: $secondary-background-color !important;
-        width: 100%;
-        ion-item {
-            background: $secondary-background-color;
         }
     }
     .long-forecast-container {
         ion-col {
-            margin-top: $margin-standard;
-            background: $secondary-background-color;
-            display: inline-block;
+            border-top: 1px solid white;
+            border-bottom: 1px solid white;
             div {
-                background: transparent;
-                margin: auto 0;
+                font-size: $primary-font-size;
+                font-weight: 500;
+                ion-item {
+                    background: transparent;
+                    color: $primary-font-color;
+                }
             }
         }
     }
