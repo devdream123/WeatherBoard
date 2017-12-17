@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
@@ -22,6 +22,7 @@ export class ForecastServiceProvider {
     var response =  this.http.get(this.baseUrl)
                  .map( (res) => res.json())
                  .catch (this.handleError);  
+                 console.log("response: " , response);
    return response;
     }
 

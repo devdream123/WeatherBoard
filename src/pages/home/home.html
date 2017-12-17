@@ -34,7 +34,7 @@
             <ion-col col-4>
                 <div text-center class="middle-condition-container">
                     <div class="condition-content">
-                        <div class="temperature">{{weatherDataMain.temp}}&deg;F</div>
+                        <div class="temperature">{{weatherDataMain.temp}}&deg;K</div>
                         <div class="description" *ngFor="let w of weatherData.weather">{{w.description}}</div>
                         <div>
                             <img src="http://openweathermap.org/img/w/{{weatherIcon}}" alt="icon">
@@ -46,16 +46,17 @@
                 <ion-row class="right-condition-container">
                     <ion-col col-12 class="condition-content">
                         <label>Min Temp: </label>
-                        <span>{{weatherDataMain.temp_min}}&deg;F</span>
+                        <span>{{weatherDataMain.temp_min}}&deg;K</span>
                     </ion-col>
                     <ion-col col-12 class="condition-content">
                         <label>Max Temp:</label>
-                        <span>{{weatherDataMain.temp_max}}&deg;F</span>
+                        <span>{{weatherDataMain.temp_max}}&deg;K</span>
                     </ion-col>
                 </ion-row>
             </ion-col>
         </ion-row>
 
+        <label>Next Few Hours Forecast</label>
         <ion-scroll scrollX="true" class="center scroll-hourly" no-margin>
             <ion-row nowrap *ngIf="isToday">
                 <ion-col col-3 *ngFor="let todayForecast of hourlyList">
@@ -64,33 +65,37 @@
                     </p>
                     <img no-margin no-padding src="http://openweathermap.org/img/w/{{todayForecast.icon}}.png">
                     <p no-margin no-padding>
-                        <span>{{todayForecast.temp}}&deg;F</span>
+                        <span>{{todayForecast.temp}}&deg;K</span>
                     </p>
                 </ion-col>
             </ion-row>
         </ion-scroll>
 
-        <ion-row>
-            <ion-col col-4>
-                <ion-list>
-                    <div class="long-forecast-item">
-                        <ion-item>Friday</ion-item>
+        <label>Long Forecast</label>
+        <ion-list class="long-forecast-container">
+            <ion-row>
+                <ion-col col-4>
+                    <div>
+                        <ion-item no-lines>Friday</ion-item>
                     </div>
-                </ion-list>
-            </ion-col>
-            <ion-col col-4>
-                <ion-list>
-                    <ion-item>Sunny</ion-item>
-                </ion-list>
-            </ion-col>
-            <ion-col col-4>
-                <ion-list>
-                    <ion-item>16</ion-item>
-                    <ion-item>22</ion-item>
-                </ion-list>
-            </ion-col>
-
-        </ion-row>
+                </ion-col>
+                <ion-col col-4>
+                    <div>
+                        <ion-item no-lines>Sunny</ion-item>
+                    </div>
+                </ion-col>
+                <ion-col col-2>
+                    <div>
+                        <ion-item no-lines><span class="icon">v</span>16</ion-item>
+                    </div>
+                </ion-col>
+                <ion-col col-2>
+                    <div>
+                        <ion-item no-lines><span class="icon">^</span>22</ion-item>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-list>
 
     </ion-grid>
 

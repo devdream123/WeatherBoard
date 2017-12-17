@@ -46,9 +46,12 @@ page-home {
     }
     ion-scroll {
         width: 100%;
-        height: 100px;
+        height: 120px;
         background: $secondary-background-color;
-        margin-top: $margin-standard;
+        margin-top: $margin-standard !important;
+        margin-bottom: $margin-standard !important;
+        border: 1px solid white;
+        //border-radius: 15px;
         ion-row {
             height: 80px;
             color: $secondary-font-color;
@@ -68,6 +71,17 @@ page-home {
         width: 100%;
         ion-item {
             background: $secondary-background-color;
+        }
+    }
+    .long-forecast-container {
+        ion-col {
+            margin-top: $margin-standard;
+            background: $secondary-background-color;
+            display: inline-block;
+            div {
+                background: transparent;
+                margin: auto 0;
+            }
         }
     }
     .circle {
