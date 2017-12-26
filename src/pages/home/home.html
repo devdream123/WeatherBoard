@@ -8,12 +8,18 @@
 </ion-header>
 
 <ion-content no-padding>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+
     <ion-grid>
         <ion-row>
             <ion-col col-12>
                 <h2 text-center>{{weatherData.name}}</h2>
                 <div text-center class="datetime-container">
-                    <div class="datetime">{{weatherData.dt * 1000 | date:'EEEE dd MMM hh:mm a'}}</div>
+                    <div class="datetime">{{today}}</div>
                 </div>
             </ion-col>
         </ion-row>
@@ -34,7 +40,7 @@
             <ion-col col-4>
                 <div text-center class="middle-condition-container">
                     <div class="condition-content">
-                        <div class="temperature">{{weatherDataMain.temp}}&deg;K</div>
+                        <div class="temperature">{{weatherDataMain.temp}}&deg;C</div>
                         <div class="description" *ngFor="let w of weatherData.weather">{{w.description}}</div>
                         <div>
                             <img src="http://openweathermap.org/img/w/{{weatherIcon}}" alt="icon">
@@ -45,12 +51,12 @@
             <ion-col col-4>
                 <ion-row class="right-condition-container" margin-vertical margin-horizontal>
                     <ion-col col-12 class="condition-content">
-                        <label>Min Temp: </label>
-                        <span>{{weatherDataMain.temp_min}}&deg;K</span>
+                        <label>Wind: </label>
+                        <span>{{weatherDataWind.speed}} m/s</span>
                     </ion-col>
                     <ion-col col-12 class="condition-content">
-                        <label>Max Temp:</label>
-                        <span>{{weatherDataMain.temp_max}}&deg;K</span>
+                        <label>Degree:</label>
+                        <span>{{weatherDataWind.deg}}&deg;</span>
                     </ion-col>
                 </ion-row>
             </ion-col>
@@ -65,7 +71,7 @@
                     </p>
                     <img no-margin no-padding src="http://openweathermap.org/img/w/{{todayForecast.icon}}.png">
                     <p no-margin no-padding>
-                        <span>{{todayForecast.temp}}&deg;K</span>
+                        <span>{{todayForecast.temp}}&deg;C</span>
                     </p>
                 </ion-col>
             </ion-row>
@@ -88,7 +94,7 @@
 
                 <ion-col col-4>
                     <div>
-                        <ion-item text-center no-lines><span class="icon"></span>{{forecast.temp}}&deg;K</ion-item>
+                        <ion-item text-center no-lines><span class="icon"></span>{{forecast.temp}}&deg;C</ion-item>
                     </div>
                 </ion-col>
             </ion-row>

@@ -11,7 +11,8 @@ import 'rxjs/add/operator/catch';
 */
 @Injectable()
 export class WeatherServiceProvider {
-  private baseUrl:string  = "../../assets/json/weather.local.json"; //api.openweathermap.org/data/2.5/weather?
+  private baseUrl:string  =  "http://api.openweathermap.org/data/2.5/weather?lat=10.762622&lon=106.660172&units=metric&APPID=2035919e80085e73997f50e5cf950035";
+  //"../../assets/json/weather.local.json"; //api.openweathermap.org/data/2.5/weather?
   
   constructor(public http: Http) {
   }

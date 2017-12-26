@@ -1,40 +1,40 @@
 {
     "coord": {
-        "lon": 174.76,
-        "lat": -36.85
+        "lon": 106.66,
+        "lat": 10.76
     },
     "weather": [{
-        "id": 800,
-        "main": "Clear",
-        "description": "clear sky",
-        "icon": "01n"
+        "id": 802,
+        "main": "Clouds",
+        "description": "scattered clouds",
+        "icon": "03d"
     }],
     "base": "stations",
     "main": {
-        "temp": 292.15,
-        "pressure": 1024,
-        "humidity": 68,
-        "temp_min": 292.15,
-        "temp_max": 292.15
+        "temp": 30,
+        "pressure": 1009,
+        "humidity": 58,
+        "temp_min": 30,
+        "temp_max": 30
     },
     "visibility": 10000,
     "wind": {
         "speed": 3.1,
-        "deg": 360
+        "deg": 50
     },
     "clouds": {
-        "all": 0
+        "all": 40
     },
-    "dt": 1512199800,
+    "dt": 1514089800,
     "sys": {
         "type": 1,
-        "id": 8276,
-        "message": 0.0046,
-        "country": "NZ",
-        "sunrise": 1512147314,
-        "sunset": 1512199553
+        "id": 7985,
+        "message": 0.0089,
+        "country": "VN",
+        "sunrise": 1514070482,
+        "sunset": 1514111876
     },
-    "id": 2193732,
-    "name": "Auckland",
+    "id": 1566083,
+    "name": "Thanh pho Ho Chi Minh",
     "cod": 200
 }

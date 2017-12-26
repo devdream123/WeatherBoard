@@ -2,7 +2,7 @@
 import { WeatherServiceProvider } from '../../providers/weather-service/weather.service';
 import { ForecastServiceProvider } from '../../providers/forecast-service/forecast-service';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
 
 
@@ -12,7 +12,8 @@ import * as moment from 'moment';
 })
 export class HomePage{
   private weatherData:Object = {};
-  private weatherDataMain:Object = {};  
+  private weatherDataMain:Object = {}; 
+  private weatherDataWind:Object = {};  
   private weatherIcon;
   public forecastData:Object = {};
   public forecastList = [];
@@ -22,9 +23,10 @@ export class HomePage{
   private hourly ;
   private day;
   private isToday: boolean;
+  private today ;
   private errorMessage:any = '';
-  constructor(public navCtrl: NavController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider) {
-
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider) {
+    this.today =  moment().format('dddd DD MMMM hh:mm a');
   }
 
  ionViewWillEnter(){
@@ -32,12 +34,28 @@ export class HomePage{
     this.getForecastByCoord();
   }
 
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 3000
+    });
+    loader.present();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+      window.location.reload();
+    }, 2000);
+
+
+  }
 
   public getCurrentWeatherByCoord(){
     this.weatherService.getWeatherByCoordinates().subscribe(   
       result => { 
         this.weatherData = result ;
         this.weatherDataMain = result.main;
+        this.weatherDataWind = result.wind;
         this.weatherIcon = result.weather[0].icon + ".png";
       },
       error => this.errorMessage = <any>error
@@ -57,22 +75,20 @@ export class HomePage{
   }
   
   private getHourlyForecast():void{
-    let now = moment().format('DD-MM-YY hh');
+    let now = moment();
     let forecastUnixDate;
-    let forecastDateHourTxt ;
+    let isBeforeNextDay;
     this.forecastList.splice(0,7).forEach(forecastElement => {
       this.forecastWeather= forecastElement.weather[0]; //array length of weather key always 1
-      console.log("forecastElement.dt : " ,forecastElement.dt  );
+      forecastUnixDate = moment(forecastElement.dt * 1000);
 
-      forecastUnixDate = forecastElement.dt * 1000;
-      forecastDateHourTxt= moment(forecastUnixDate).format('DD-MM-YY hh');
-
-        if(now <= forecastDateHourTxt ){
+        isBeforeNextDay = now.isBefore(forecastUnixDate);
+        if(isBeforeNextDay){
         this.isToday = true;
         this.hourly = moment(forecastUnixDate).format('h a');
         this.hourlyList.push({
           "hour" : this.hourly,
-          "temp" : forecastElement.main.temp,
+          "temp" : parseInt(forecastElement.main.temp),
           "description" : this.forecastWeather['description'],
           "icon" : this.forecastWeather['icon']
         });
@@ -101,7 +117,7 @@ export class HomePage{
           this.daysList.push({
             "unixTime" : forecastElement.dt,
             "day" : this.day,
-            "temp" : forecastElement.main.temp,
+            "temp" : parseInt(forecastElement.main.temp),
             "description" : this.forecastWeather['description'],
             "icon" :this.forecastWeather['icon']
           });

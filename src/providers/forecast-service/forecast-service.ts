@@ -12,7 +12,7 @@ import 'rxjs/add/operator/catch';
 */
 @Injectable()
 export class ForecastServiceProvider {
-  private baseUrl:string  = "../../assets/json/forecast.local.json"; //api.openweathermap.org/data/2.5/forecast?
+  private baseUrl:string  ="../../assets/json/forecast.local.json"; //api.openweathermap.org/data/2.5/forecast?
   
   constructor(public http: Http) {
     console.log('Hello ForecastServiceProvider Provider');
