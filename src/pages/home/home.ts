@@ -23,10 +23,10 @@ export class HomePage{
   private hourly ;
   private day;
   private isToday: boolean;
-  private today ;
+  private now ;
   private errorMessage:any = '';
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider) {
-    this.today =  moment().format('dddd DD MMMM hh:mm a');
+    this.now =  moment();
   }
 
  ionViewWillEnter(){
@@ -75,14 +75,13 @@ export class HomePage{
   }
   
   private getHourlyForecast():void{
-    let now = moment();
     let forecastUnixDate;
     let isBeforeNextDay;
     this.forecastList.splice(0,7).forEach(forecastElement => {
       this.forecastWeather= forecastElement.weather[0]; //array length of weather key always 1
       forecastUnixDate = moment(forecastElement.dt * 1000);
 
-        isBeforeNextDay = now.isBefore(forecastUnixDate);
+        isBeforeNextDay = this.now.isBefore(forecastUnixDate);
         if(isBeforeNextDay){
         this.isToday = true;
         this.hourly = moment(forecastUnixDate).format('h a');
@@ -97,23 +96,22 @@ export class HomePage{
   }
 
   private getDaysForecast():void{
-    let forecastDateTxt ;
     let temporary ="";
     let forecastUnixDate;
-    let today = moment().format('DD-MM-YY');
+    let isBeforeNextDay;
     let forecastFixedHr;
     this.forecastList.forEach(forecastElement => {
       this.forecastWeather= forecastElement.weather[0];
       
-      forecastUnixDate = forecastElement.dt *1000;
-      forecastDateTxt= moment(forecastUnixDate).format('DD-MM-YY');
+      forecastUnixDate = moment(forecastElement.dt * 1000)
       forecastFixedHr = moment(forecastUnixDate).format('hh:mm a');
-      
+      isBeforeNextDay = this.now.isBefore(forecastUnixDate);
       /*Due to the api return every 3 hours/5 days forecast, we need to pick an hour within that day to display an approximate weather condition*/
-      if(today < forecastDateTxt && forecastFixedHr === "10:00 am"){
-       if( forecastDateTxt !== temporary){
-         temporary = forecastDateTxt;         
-          this.day = moment(forecastUnixDate).format('dddd');
+
+      if(isBeforeNextDay && forecastFixedHr === "10:00 am"){
+       if( forecastUnixDate !== temporary){
+         temporary = forecastUnixDate;         
+          this.day = moment(forecastUnixDate).format('dddd DD-MM');
           this.daysList.push({
             "unixTime" : forecastElement.dt,
             "day" : this.day,
