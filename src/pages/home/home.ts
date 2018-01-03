@@ -24,9 +24,11 @@ export class HomePage{
   private day;
   private isToday: boolean;
   private now ;
+  public currentDateToDisplay;
   private errorMessage:any = '';
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider) {
     this.now =  moment();
+    this.currentDateToDisplay = "Today " + this.now.format('DD-MM hh:mm a');
   }
 
  ionViewWillEnter(){
@@ -45,7 +47,7 @@ export class HomePage{
       console.log('Async operation has ended');
       refresher.complete();
       window.location.reload();
-    }, 2000);
+    }, 3000);
 
 
   }
@@ -111,7 +113,7 @@ export class HomePage{
       if(isBeforeNextDay && forecastFixedHr === "10:00 am"){
        if( forecastUnixDate !== temporary){
          temporary = forecastUnixDate;         
-          this.day = moment(forecastUnixDate).format('dddd DD-MM');
+          this.day = moment(forecastUnixDate).format('dddd');
           this.daysList.push({
             "unixTime" : forecastElement.dt,
             "day" : this.day,

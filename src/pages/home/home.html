@@ -1,16 +1,14 @@
-<ion-header>
+<ion-header no-border-top no-border-bottom>
     <ion-navbar>
-        <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-        <ion-title>Weather Board</ion-title>
+        <button ion-button icon-only menuToggle>
+                    <ion-icon name="menu"></ion-icon>
+            </button>
+        <ion-title>Current Weather</ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content no-padding>
     <ion-refresher (ionRefresh)="doRefresh($event)">
-        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
-        </ion-refresher-content>
     </ion-refresher>
 
 
@@ -19,7 +17,7 @@
             <ion-col col-12>
                 <h2 text-center>{{weatherData.name}}</h2>
                 <div text-center class="datetime-container">
-                    <div class="datetime">{{today}}</div>
+                    <div class="datetime">{{currentDateToDisplay}}</div>
                 </div>
             </ion-col>
         </ion-row>

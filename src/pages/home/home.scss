@@ -3,13 +3,21 @@ page-home {
     $margin-standard: 15px;
     $color-white: #FFFFFF;
     $color-black: #000000;
-    $color-dark-blue: #050533;
-    $primary-background-color: $color-dark-blue;
+    $color-diagonal-linear-blue: linear-gradient( #4789de, #6cceff); //TODO: replace with a better background
     $secondary-background-color: $color-white;
-    $primary-background-color: $color-dark-blue;
+    $primary-background-color: $color-diagonal-linear-blue;
     $primary-font-color: $color-white;
     $secondary-font-color: $color-black;
     $primary-font-size: 14px;
+    ion-header {
+        .toolbar-background {
+            background: transparent;
+        }
+        button,
+        .toolbar-title {
+            color: $primary-font-color !important;
+        }
+    }
     h2 {
         font-weight: bold;
     }
@@ -19,6 +27,9 @@ page-home {
     ion-content {
         background: $primary-background-color !important;
         color: $primary-font-color! important;
+    }
+    ion-refresher-content {
+        color: $primary-font-color;
     }
     .left-condition-container {
         font-size: $primary-font-size;

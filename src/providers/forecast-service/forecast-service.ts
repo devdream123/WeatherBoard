@@ -12,13 +12,13 @@ import 'rxjs/add/operator/catch';
 */
 @Injectable()
 export class ForecastServiceProvider {
-  private baseUrl:string  ="../../assets/json/forecast.local.json"; //api.openweathermap.org/data/2.5/forecast?
+  //"../../assets/json/forecast.local.json"; -- for local development
+  private baseUrl:string  =  "http://api.openweathermap.org/data/2.5/forecast?lat=10.762622&lon=106.660172&units=metric&APPID=2035919e80085e73997f50e5cf950035";
   
   constructor(public http: Http) {
     console.log('Hello ForecastServiceProvider Provider');
   }
   getForecastByCoord(): Observable<any> {
-    //"http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139&APPID=2035919e80085e73997f50e5cf950035"
     var response =  this.http.get(this.baseUrl)
                  .map( (res) => res.json())
                  .catch (this.handleError);  
