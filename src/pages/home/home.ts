@@ -1,9 +1,10 @@
 
 import { WeatherServiceProvider } from '../../providers/weather-service/weather.service';
-import { ForecastServiceProvider } from '../../providers/forecast-service/forecast-service';
+import { ForecastServiceProvider } from '../../providers/forecast-service/forecast.service';
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
+import { Geolocation } from '@ionic-native/geolocation';
 
 
 @Component({
@@ -26,17 +27,34 @@ export class HomePage{
   private now ;
   public currentDateToDisplay;
   private errorMessage:any = '';
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider) {
+  private latitude;
+  private longtitude;
+  private units;
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation) {
     this.now =  moment();
     this.currentDateToDisplay = "Today " + this.now.format('DD-MM hh:mm a');
   }
 
  ionViewWillEnter(){
-    this.getCurrentWeatherByCoord();
-    this.getForecastByCoord();
+    this.loadCurrentLocation();
+   
   }
 
-  doRefresh(refresher) {
+  public loadCurrentLocation(){
+    this.geolocation.getCurrentPosition().then(
+      (resp) => {
+        this.latitude = resp.coords.latitude;
+        this.longtitude = resp.coords.longitude;
+        this.units = "metric";
+        this.getCurrentWeatherByCoord(this.latitude, this.longtitude, this.units);
+        this.getForecastByCoord(this.latitude, this.longtitude, this.units);
+      }).catch(
+        (error) => {
+        console.log('Error getting location: ',error);
+      });
+  }
+
+  public doRefresh(refresher) {
     console.log('Begin async operation', refresher);
     let loader = this.loadingCtrl.create({
       content: "Please wait...",
@@ -52,8 +70,8 @@ export class HomePage{
 
   }
 
-  public getCurrentWeatherByCoord(){
-    this.weatherService.getWeatherByCoordinates().subscribe(   
+  private getCurrentWeatherByCoord(lat, lon, units){
+    this.weatherService.getWeatherByCoordinates(lat,lon, units).subscribe(   
       result => { 
         this.weatherData = result ;
         this.weatherDataMain = result.main;
@@ -63,8 +81,8 @@ export class HomePage{
       error => this.errorMessage = <any>error
     );
   }
-  public getForecastByCoord():void{
-    this.forecastService.getForecastByCoord().subscribe(   
+  private getForecastByCoord(lat, lon, units):void{
+    this.forecastService.getForecastByCoord(lat, lon, units).subscribe(   
       result => { 
        this.forecastData = result.city;
        this.forecastList = result.list;

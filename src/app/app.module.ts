@@ -9,8 +9,9 @@ import { ListPage } from '../pages/list/list';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { WeatherServiceProvider } from '../providers/weather-service/weather.service';
-import { ForecastServiceProvider } from '../providers/forecast-service/forecast-service';
+import { ForecastServiceProvider } from '../providers/forecast-service/forecast.service';
 import { HttpModule } from '@angular/http';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { HttpModule } from '@angular/http';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     WeatherServiceProvider,
-    ForecastServiceProvider
+    ForecastServiceProvider,
+    Geolocation
   ]
 })
 export class AppModule {}
