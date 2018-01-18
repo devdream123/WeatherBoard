@@ -4,7 +4,7 @@ import { ForecastServiceProvider } from '../../providers/forecast-service/foreca
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation, GeolocationOptions } from '@ionic-native/geolocation';
 
 
 @Component({
@@ -30,6 +30,7 @@ export class HomePage{
   private latitude;
   private longtitude;
   private units;
+
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation) {
     this.now =  moment();
     this.currentDateToDisplay = "Today " + this.now.format('DD-MM hh:mm a');
@@ -37,11 +38,16 @@ export class HomePage{
 
  ionViewWillEnter(){
     this.loadCurrentLocation();
-   
   }
 
   public loadCurrentLocation(){
-    this.geolocation.getCurrentPosition().then(
+    let geoOptions: GeolocationOptions = {
+      enableHighAccuracy : true,
+       timeout: 5000,
+       maximumAge: 0
+    };
+
+    this.geolocation.getCurrentPosition(geoOptions).then(
       (resp) => {
         this.latitude = resp.coords.latitude;
         this.longtitude = resp.coords.longitude;
@@ -81,6 +87,7 @@ export class HomePage{
       error => this.errorMessage = <any>error
     );
   }
+  
   private getForecastByCoord(lat, lon, units):void{
     this.forecastService.getForecastByCoord(lat, lon, units).subscribe(   
       result => { 
