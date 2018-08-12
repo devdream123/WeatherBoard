@@ -1,8 +1,7 @@
 {
-  "name": "WeatherBoard",
-  "app_id": "",
-  "type": "ionic-angular",
-  "integrations": {
-    "cordova": {}
-  }
+    "name": "WeatherBoard",
+    "integrations": {
+        "cordova": {}
+    },
+    "type": "ionic-angular"
 }

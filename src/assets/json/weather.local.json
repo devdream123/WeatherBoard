@@ -4,35 +4,35 @@
         "lat": 10.76
     },
     "weather": [{
-        "id": 802,
+        "id": 803,
         "main": "Clouds",
-        "description": "scattered clouds",
-        "icon": "03d"
+        "description": "broken clouds",
+        "icon": "04d"
     }],
     "base": "stations",
     "main": {
-        "temp": 30,
+        "temp": 29,
         "pressure": 1009,
-        "humidity": 58,
-        "temp_min": 30,
-        "temp_max": 30
+        "humidity": 83,
+        "temp_min": 29,
+        "temp_max": 29
     },
     "visibility": 10000,
     "wind": {
-        "speed": 3.1,
-        "deg": 50
+        "speed": 5.1,
+        "deg": 260
     },
     "clouds": {
-        "all": 40
+        "all": 75
     },
-    "dt": 1514089800,
+    "dt": 1533960000,
     "sys": {
         "type": 1,
         "id": 7985,
-        "message": 0.0089,
+        "message": 0.0055,
         "country": "VN",
-        "sunrise": 1514070482,
-        "sunset": 1514111876
+        "sunrise": 1533940991,
+        "sunset": 1533986031
     },
     "id": 1566083,
     "name": "Thanh pho Ho Chi Minh",

@@ -1,0 +1,19 @@
+<!-- Generated template for the UnitsComponent component -->
+<ion-segment>
+    <!-- <ion-segment>
+        <ion-icon padding-right [name]="unitsIcon"> </ion-icon>
+        <ion-segment-button (unitTemp)=onUnitSelected($event) (click)="metricSelected()">
+            C&deg;
+        </ion-segment-button>
+        <ion-segment-button (unitTemp)=onUnitSelected($event) (click)="imperialSelected()">
+            F&deg;
+        </ion-segment-button>
+    </ion-segment> -->
+    <button ion-button small [disabled]="unit==='metric'" (click)="metricSelected()">
+        <ion-icon name="metric" >C</ion-icon>
+    </button>
+    <button ion-button small [disabled]="unit==='imperial'" (click)="imperialSelected()">
+            <ion-icon name="imperial" >F</ion-icon>
+    </button>
+
+</ion-segment>

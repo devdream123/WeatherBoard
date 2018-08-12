@@ -10,12 +10,22 @@ page-home {
     $secondary-font-color: $color-black;
     $primary-font-size: 14px;
     ion-header {
-        .toolbar-background {
-            background: transparent;
-        }
-        button,
-        .toolbar-title {
-            color: $primary-font-color !important;
+        ion-row {
+            text-align: center;
+            .col {
+                background: transparent;
+            }
+            .searchbar-input-container {
+                .searchbar-input {
+                    background: $secondary-background-color;
+                    border: none;
+                    border-radius: 10px;
+                    width: 100%;
+                }
+            }
+            .toolbar-title {
+                color: $primary-font-color !important;
+            }
         }
     }
     h2 {

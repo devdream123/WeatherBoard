@@ -1,43 +1,97 @@
 
 import { WeatherServiceProvider } from '../../providers/weather-service/weather.service';
 import { ForecastServiceProvider } from '../../providers/forecast-service/forecast.service';
-import { Component } from '@angular/core';
+import { LocationServiceProvider } from '../../providers/location-service/location-service';
+
+import { Component, Input } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
 import { Geolocation, GeolocationOptions } from '@ionic-native/geolocation';
-
+import { Events } from 'ionic-angular';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage{
-  private weatherData:Object = {};
-  private weatherDataMain:Object = {}; 
-  private weatherDataWind:Object = {};  
-  private weatherIcon;
+  @Input() locationInput:String;
+  public weatherData:Object = {};
+  public weatherDataMain:Object = {}; 
+  public weatherDataWind:Object = {};  
+  public weatherIcon;
   public forecastData:Object = {};
   public forecastList = [];
+  public isToday: boolean;
+  public currentDateToDisplay;
   private forecastWeather:Object = {};
   private hourlyList = [];
   private daysList = [];
   private hourly ;
   private day;
-  private isToday: boolean;
   private now ;
-  public currentDateToDisplay;
   private errorMessage:any = '';
   private latitude;
   private longtitude;
-  private units;
+  private units = "metric";
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation) {
-    this.now =  moment();
-    this.currentDateToDisplay = "Today " + this.now.format('DD-MM hh:mm a');
+  constructor(public events: Events, public navCtrl: NavController, public loadingCtrl: LoadingController,  private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation, private locationService:LocationServiceProvider) {
   }
 
  ionViewWillEnter(){
-    this.loadCurrentLocation();
+  this.now =  moment();
+  this.currentDateToDisplay = "Today " + this.now.format('DD-MM hh:mm a');
+  this.longtitude = localStorage.getItem("new-long");
+  this.latitude =localStorage.getItem("new-lat");
+  console.log("new this.latitude-after reload",  this.latitude)
+  console.log("new this.longtitude-after reload",  this.longtitude)
+    if( this.latitude === null ||  this.longtitude === null){
+      this.units = localStorage.getItem("newUnitTemp");
+      this.loadCurrentLocation();
+    }else{
+      this.units = localStorage.getItem("newUnitTemp");
+      this.getCurrentWeatherByCoord(this.latitude, this.longtitude, this.units);
+      this.getForecastByCoord(this.latitude, this.longtitude, this.units);
+    }
+  }
+
+  handleUnitChange(unit){
+    localStorage.removeItem("newUnitTemp");
+    console.log("unit-home: ", unit)
+    localStorage.setItem("newUnitTemp", unit);
+    this.units = unit;
+    this.ionViewWillEnter();
+    window.location.reload();
+  }
+
+  loadNewLocation(){
+    this.getNewLocation(this.locationInput)
+  }
+
+  private getNewLocation(newLocation) {
+    console.log("get new location")
+    localStorage.removeItem("new-lat");
+    localStorage.removeItem("new-long");
+    this.locationService.queryLocation(newLocation).subscribe(
+      (resp) => {
+        console.log("new location resp -", resp);
+        this.latitude = resp.candidates[0].geometry.location.lat;
+        this.longtitude = resp.candidates[0].geometry.location.lng;
+        localStorage.setItem("new-lat", this.latitude);
+        localStorage.setItem("new-long",this.longtitude);
+        window.location.reload();
+      },
+      (error) => {
+        if (error.status === "OVER_QUERY_LIMIT"){
+          alert ("You have exceeded your daily request quota for this API.");
+        }else if (error.status === "ZERO_RESULTS" ){
+          alert("No location found!")
+        }
+      }
+    )
+    console.log("new this.latitude",  this.latitude)
+    console.log("new this.longtitude",  this.longtitude)
+    
   }
 
   public loadCurrentLocation(){
@@ -47,17 +101,15 @@ export class HomePage{
        maximumAge: 0
     };
 
-    this.geolocation.getCurrentPosition(geoOptions).then(
+   return this.geolocation.watchPosition(geoOptions)
+    .filter((p) => p.coords !== undefined) //Filter Out Errors
+    .subscribe(
       (resp) => {
         this.latitude = resp.coords.latitude;
         this.longtitude = resp.coords.longitude;
-        this.units = "metric";
         this.getCurrentWeatherByCoord(this.latitude, this.longtitude, this.units);
         this.getForecastByCoord(this.latitude, this.longtitude, this.units);
-      }).catch(
-        (error) => {
-        console.log('Error getting location: ',error);
-      });
+      })
   }
 
   public doRefresh(refresher) {
@@ -70,14 +122,15 @@ export class HomePage{
     setTimeout(() => {
       console.log('Async operation has ended');
       refresher.complete();
-      window.location.reload();
+      location.reload();
     }, 3000);
-
-
   }
 
   private getCurrentWeatherByCoord(lat, lon, units){
-    this.weatherService.getWeatherByCoordinates(lat,lon, units).subscribe(   
+    console.log("getCurrentWeather");
+    console.log("units: ", units);
+
+  return  this.weatherService.getWeatherByCoordinates(lat,lon, units).subscribe(   
       result => { 
         this.weatherData = result ;
         this.weatherDataMain = result.main;
@@ -88,17 +141,19 @@ export class HomePage{
     );
   }
   
-  private getForecastByCoord(lat, lon, units):void{
-    this.forecastService.getForecastByCoord(lat, lon, units).subscribe(   
+  private getForecastByCoord(lat, lon, units){
+    console.log("getCurrentForecast");
+    console.log("units: ", units);
+
+  return this.forecastService.getForecastByCoord(lat, lon, units).subscribe(   
       result => { 
        this.forecastData = result.city;
        this.forecastList = result.list;
-       console.log("this.forecastList: " , this.forecastList);
        this.getDaysForecast();
        this.getHourlyForecast();
       },
       error => this.errorMessage = <any>error
-    );    
+    ); 
   }
   
   private getHourlyForecast():void{
