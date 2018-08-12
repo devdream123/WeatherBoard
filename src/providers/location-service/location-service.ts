@@ -17,7 +17,6 @@ constructor(public http: Http) {
 }
 
 queryLocation(locationText): Observable<any>{
-  //https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=3211%20Great%20North%20Road&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyBASqJYvjhPiczLrKsZLdBFAQkMtZ4_0iE
   this.baseUrl = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + locationText + "&inputtype=textquery" + "&fields=formatted_address,geometry"+ "&key=" + this.apiKey;    
   // this.baseUrl ="https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=auckland%20new%20zealand&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyBASqJYvjhPiczLrKsZLdBFAQkMtZ4_0iE";
   var response = this.http.get(this.baseUrl)

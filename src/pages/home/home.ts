@@ -34,6 +34,7 @@ export class HomePage{
   private latitude;
   private longtitude;
   private units = "metric";
+  private unitSymbol = "C";
 
   constructor(public events: Events, public navCtrl: NavController, public loadingCtrl: LoadingController,  private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation, private locationService:LocationServiceProvider) {
   }
@@ -47,9 +48,19 @@ export class HomePage{
   console.log("new this.longtitude-after reload",  this.longtitude)
     if( this.latitude === null ||  this.longtitude === null){
       this.units = localStorage.getItem("newUnitTemp");
+      if(this.units === "metric"){
+        this.unitSymbol = "C";
+      }else{
+        this.unitSymbol = "F";
+      }
       this.loadCurrentLocation();
     }else{
       this.units = localStorage.getItem("newUnitTemp");
+      if(this.units === "metric"){
+        this.unitSymbol = "C";
+      }else{
+        this.unitSymbol = "F";
+      }
       this.getCurrentWeatherByCoord(this.latitude, this.longtitude, this.units);
       this.getForecastByCoord(this.latitude, this.longtitude, this.units);
     }

@@ -22,13 +22,10 @@ export class UnitsComponent {
     this.unit = "metric";
     console.log('this.unit: ' ,this.unit);
     this.unitTempEvent.emit(this.unit);
-  //  this.events.publish('Unit selected', this.unit); 
   }
  imperialSelected ($event){
     this.unit = "imperial";
     console.log('this.unit: ' ,this.unit);
     this.unitTempEvent.emit(this.unit);
-
-  // this.events.publish('Unit selected', this.unit);
   }
 }

@@ -4,9 +4,6 @@
             <ion-col ion-item no-lines no-padding text-center col-8>
                 <ion-searchbar placeholder="Search a location" [(ngModel)]="locationInput" [showCancelButton]="shouldShowCancel" (change)="loadNewLocation($event)" (ionCancel)="onCancel($event)"></ion-searchbar>
             </ion-col>
-            <!-- <ion-col ion-item no-lines no-padding text-center col-6>
-                <ion-title>Current Weather</ion-title>
-            </ion-col> -->
             <ion-col ion-item no-lines no-padding text-center col-4>
                 <ion-title>Temperature Unit:</ion-title>
                 <units-component class="units-setting" (unitTempEvent)="handleUnitChange($event)"></units-component>
@@ -44,7 +41,7 @@
             <ion-col col-4>
                 <div text-center class="middle-condition-container">
                     <div class="condition-content">
-                        <div class="temperature" type="number">{{weatherDataMain.temp | number: '1.0-0'}}&deg;C</div>
+                        <div class="temperature" type="number">{{weatherDataMain.temp | number: '1.0-0'}}&deg;{{unitSymbol}}</div>
                         <div class="description" *ngFor="let w of weatherData.weather">{{w.description}}</div>
                         <div>
                             <img src="http://openweathermap.org/img/w/{{weatherIcon}}" alt="icon">
@@ -75,7 +72,7 @@
                     </p>
                     <img no-margin no-padding src="http://openweathermap.org/img/w/{{todayForecast.icon}}.png">
                     <p no-margin no-padding>
-                        <span>{{todayForecast.temp}}&deg;C</span>
+                        <span>{{todayForecast.temp}}&deg;{{unitSymbol}}</span>
                     </p>
                 </ion-col>
             </ion-row>
@@ -98,7 +95,7 @@
 
                 <ion-col col-4>
                     <div>
-                        <ion-item text-center no-lines><span class="icon"></span>{{forecast.temp}}&deg;C</ion-item>
+                        <ion-item text-center no-lines><span class="icon"></span>{{forecast.temp}}&deg;{{unitSymbol}}</ion-item>
                     </div>
                 </ion-col>
             </ion-row>
