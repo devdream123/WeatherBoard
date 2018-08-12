@@ -5,7 +5,7 @@
                 <ion-searchbar placeholder="Search a location" [(ngModel)]="locationInput" [showCancelButton]="shouldShowCancel" (change)="loadNewLocation($event)" (ionCancel)="onCancel($event)"></ion-searchbar>
             </ion-col>
             <ion-col ion-item no-lines no-padding text-center col-4>
-                <ion-title>Temperature Unit:</ion-title>
+                <ion-title class="units-setting-title">Temperature Unit</ion-title>
                 <units-component class="units-setting" (unitTempEvent)="handleUnitChange($event)"></units-component>
             </ion-col>
         </ion-row>

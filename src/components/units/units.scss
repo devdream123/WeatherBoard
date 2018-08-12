@@ -1,1 +1,13 @@
-units-component {}
+units-component {
+    ion-segment {
+        justify-content: flex-end;
+    }
+    .button {
+        background: white;
+        color: black;
+        &:hover {
+            background: blue;
+            color: white;
+        }
+    }
+}
