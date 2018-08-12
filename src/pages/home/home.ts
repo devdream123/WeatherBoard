@@ -31,10 +31,12 @@ export class HomePage{
   private day;
   private now ;
   private errorMessage:any = '';
-  private latitude;
-  private longtitude;
-  private units = "metric";
-  private unitSymbol = "C";
+  public latitude;
+  public longtitude;
+  public units = "metric";
+  public unitSymbol = "C";
+  public windUnit = "m/s";
+
 
   constructor(public events: Events, public navCtrl: NavController, public loadingCtrl: LoadingController,  private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation, private locationService:LocationServiceProvider) {
   }
@@ -50,16 +52,20 @@ export class HomePage{
       this.units = localStorage.getItem("newUnitTemp");
       if(this.units === "metric"){
         this.unitSymbol = "C";
+        this.windUnit = "m/s"
       }else{
         this.unitSymbol = "F";
+        this.windUnit = "mi/hr"
       }
       this.loadCurrentLocation();
     }else{
       this.units = localStorage.getItem("newUnitTemp");
       if(this.units === "metric"){
         this.unitSymbol = "C";
+        this.windUnit = "m/s"
       }else{
         this.unitSymbol = "F";
+        this.windUnit = "mi/hr"
       }
       this.getCurrentWeatherByCoord(this.latitude, this.longtitude, this.units);
       this.getForecastByCoord(this.latitude, this.longtitude, this.units);
