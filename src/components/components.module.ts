@@ -3,14 +3,11 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from 'ionic-angular';
 
 import { UnitsComponent } from './units/units';
-import { SettingComponent } from './setting/setting';
 
 @NgModule({
 	imports: [CommonModule,IonicModule],
 	exports: [
-    UnitsComponent,
-    SettingComponent],
-    declarations: [UnitsComponent,
-    SettingComponent],
+    UnitsComponent,],
+    declarations: [UnitsComponent],
 })
 export class ComponentsModule {}
