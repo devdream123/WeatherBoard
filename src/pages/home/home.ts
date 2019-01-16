@@ -14,23 +14,23 @@ import 'rxjs/add/operator/filter';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage{
-  @Input() locationInput:String;
-  public weatherData:Object = {};
-  public weatherDataMain:Object = {}; 
-  public weatherDataWind:Object = {};  
+export class HomePage {
+  @Input() locationInput: String;
+  public weatherData: Object = {};
+  public weatherDataMain: Object = {};
+  public weatherDataWind: Object = {};
   public weatherIcon;
-  public forecastData:Object = {};
+  public forecastData: Object = {};
   public forecastList = [];
   public isToday: boolean;
   public currentDateToDisplay;
-  private forecastWeather:Object = {};
+  private forecastWeather: Object = {};
   private hourlyList = [];
   private daysList = [];
-  private hourly ;
+  private hourly;
   private day;
-  private now ;
-  private errorMessage:any = '';
+  private now;
+  private errorMessage: any = '';
   public latitude;
   public longtitude;
   public units = "metric";
@@ -38,32 +38,32 @@ export class HomePage{
   public windUnit = "m/s";
 
 
-  constructor(public events: Events, public navCtrl: NavController, public loadingCtrl: LoadingController,  private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation, private locationService:LocationServiceProvider) {
+  constructor(public events: Events, public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation, private locationService: LocationServiceProvider) {
   }
 
- ionViewWillEnter(){
-  this.now =  moment();
-  this.currentDateToDisplay = "Today " + this.now.format('DD-MM hh:mm a');
-  this.longtitude = localStorage.getItem("new-long");
-  this.latitude =localStorage.getItem("new-lat");
-  console.log("new this.latitude-after reload",  this.latitude)
-  console.log("new this.longtitude-after reload",  this.longtitude)
-    if( this.latitude === null ||  this.longtitude === null){
+  ionViewWillEnter() {
+    this.now = moment();
+    this.currentDateToDisplay = "Today " + this.now.format('DD-MM hh:mm a');
+    this.longtitude = localStorage.getItem("new-long");
+    this.latitude = localStorage.getItem("new-lat");
+    console.log("new this.latitude-after reload", this.latitude)
+    console.log("new this.longtitude-after reload", this.longtitude)
+    if (this.latitude === null || this.longtitude === null) {
       this.units = localStorage.getItem("newUnitTemp");
-      if(this.units === "metric"){
+      if (this.units === "metric") {
         this.unitSymbol = "C";
         this.windUnit = "m/s"
-      }else{
+      } else {
         this.unitSymbol = "F";
         this.windUnit = "mi/hr"
       }
       this.loadCurrentLocation();
-    }else{
+    } else {
       this.units = localStorage.getItem("newUnitTemp");
-      if(this.units === "metric"){
+      if (this.units === "metric") {
         this.unitSymbol = "C";
         this.windUnit = "m/s"
-      }else{
+      } else {
         this.unitSymbol = "F";
         this.windUnit = "mi/hr"
       }
@@ -72,7 +72,7 @@ export class HomePage{
     }
   }
 
-  handleUnitChange(unit){
+  handleUnitChange(unit) {
     localStorage.removeItem("newUnitTemp");
     console.log("unit-home: ", unit)
     localStorage.setItem("newUnitTemp", unit);
@@ -81,7 +81,7 @@ export class HomePage{
     window.location.reload();
   }
 
-  loadNewLocation(){
+  loadNewLocation() {
     this.getNewLocation(this.locationInput)
   }
 
@@ -95,38 +95,38 @@ export class HomePage{
         this.latitude = resp.candidates[0].geometry.location.lat;
         this.longtitude = resp.candidates[0].geometry.location.lng;
         localStorage.setItem("new-lat", this.latitude);
-        localStorage.setItem("new-long",this.longtitude);
+        localStorage.setItem("new-long", this.longtitude);
         window.location.reload();
       },
       (error) => {
-        if (error.status === "OVER_QUERY_LIMIT"){
-          alert ("You have exceeded your daily request quota for this API.");
-        }else if (error.status === "ZERO_RESULTS" ){
+        if (error.status === "OVER_QUERY_LIMIT") {
+          alert("You have exceeded your daily request quota for this API.");
+        } else if (error.status === "ZERO_RESULTS") {
           alert("No location found!")
         }
       }
     )
-    console.log("new this.latitude",  this.latitude)
-    console.log("new this.longtitude",  this.longtitude)
-    
+    console.log("new this.latitude", this.latitude)
+    console.log("new this.longtitude", this.longtitude)
+
   }
 
-  public loadCurrentLocation(){
+  public loadCurrentLocation() {
     let geoOptions: GeolocationOptions = {
-      enableHighAccuracy : true,
-       timeout: 5000,
-       maximumAge: 0
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
     };
 
-   return this.geolocation.watchPosition(geoOptions)
-    .filter((p) => p.coords !== undefined) //Filter Out Errors
-    .subscribe(
-      (resp) => {
-        this.latitude = resp.coords.latitude;
-        this.longtitude = resp.coords.longitude;
-        this.getCurrentWeatherByCoord(this.latitude, this.longtitude, this.units);
-        this.getForecastByCoord(this.latitude, this.longtitude, this.units);
-      })
+    return this.geolocation.watchPosition(geoOptions)
+      .filter((p) => p.coords !== undefined) //Filter Out Errors
+      .subscribe(
+        (resp) => {
+          this.latitude = resp.coords.latitude;
+          this.longtitude = resp.coords.longitude;
+          this.getCurrentWeatherByCoord(this.latitude, this.longtitude, this.units);
+          this.getForecastByCoord(this.latitude, this.longtitude, this.units);
+        })
   }
 
   public doRefresh(refresher) {
@@ -143,13 +143,13 @@ export class HomePage{
     }, 3000);
   }
 
-  private getCurrentWeatherByCoord(lat, lon, units){
+  private getCurrentWeatherByCoord(lat, lon, units) {
     console.log("getCurrentWeather");
     console.log("units: ", units);
 
-  return  this.weatherService.getWeatherByCoordinates(lat,lon, units).subscribe(   
-      result => { 
-        this.weatherData = result ;
+    return this.weatherService.getWeatherByCoordinates(lat, lon, units).subscribe(
+      result => {
+        this.weatherData = result;
         this.weatherDataMain = result.main;
         this.weatherDataWind = result.wind;
         this.weatherIcon = result.weather[0].icon + ".png";
@@ -157,69 +157,67 @@ export class HomePage{
       error => this.errorMessage = <any>error
     );
   }
-  
-  private getForecastByCoord(lat, lon, units){
+
+  private getForecastByCoord(lat, lon, units) {
     console.log("getCurrentForecast");
     console.log("units: ", units);
 
-  return this.forecastService.getForecastByCoord(lat, lon, units).subscribe(   
-      result => { 
-       this.forecastData = result.city;
-       this.forecastList = result.list;
-       this.getDaysForecast();
-       this.getHourlyForecast();
+    return this.forecastService.getForecastByCoord(lat, lon, units).subscribe(
+      result => {
+        this.forecastData = result.city;
+        this.forecastList = result.list;
+        this.getDaysForecast();
+        this.getHourlyForecast();
       },
       error => this.errorMessage = <any>error
-    ); 
+    );
   }
-  
-  private getHourlyForecast():void{
+
+  private getHourlyForecast(): void {
     let forecastUnixDate;
     let isBeforeNextDay;
-    this.forecastList.splice(0,7).forEach(forecastElement => {
-      this.forecastWeather= forecastElement.weather[0]; //array length of weather key always 1
+    this.forecastList.splice(0, 7).forEach(forecastElement => {
+      this.forecastWeather = forecastElement.weather[0]; //array length of weather key always 1
       forecastUnixDate = moment(forecastElement.dt * 1000);
+      isBeforeNextDay = this.now.isBefore(forecastUnixDate);
 
-        isBeforeNextDay = this.now.isBefore(forecastUnixDate);
-        if(isBeforeNextDay){
+      if (isBeforeNextDay) {
         this.isToday = true;
         this.hourly = moment(forecastUnixDate).format('h a');
         this.hourlyList.push({
-          "hour" : this.hourly,
-          "temp" : parseInt(forecastElement.main.temp),
-          "description" : this.forecastWeather['description'],
-          "icon" : this.forecastWeather['icon']
+          "hour": this.hourly,
+          "temp": parseInt(forecastElement.main.temp),
+          "description": this.forecastWeather['description'],
+          "icon": this.forecastWeather['icon']
         });
-        }
+
+      }
     });
   }
 
-  private getDaysForecast():void{
-    let temporary ="";
+  private getDaysForecast(): void {
     let forecastUnixDate;
-    let isBeforeNextDay;
-    let forecastFixedHr;
+    let prevDay, forecastDay, forecastTime;
+    prevDay = this.now.format('dddd');
     this.forecastList.forEach(forecastElement => {
-      this.forecastWeather= forecastElement.weather[0];
-      
+      this.forecastWeather = forecastElement.weather[0];
       forecastUnixDate = moment(forecastElement.dt * 1000)
-      forecastFixedHr = moment(forecastUnixDate).format('hh:mm a');
-      isBeforeNextDay = this.now.isBefore(forecastUnixDate);
-      /*Due to the api return every 3 hours/5 days forecast, we need to pick an hour within that day to display an approximate weather condition*/
+      forecastDay = moment(forecastElement.dt_txt).format("dddd"); //return day eg: Monday
+      forecastTime = moment(forecastElement.dt_txt).format("HH"); //return 24 hours eg: 04 or 23
 
-      if(isBeforeNextDay && forecastFixedHr === "10:00 am"){
-       if( forecastUnixDate !== temporary){
-         temporary = forecastUnixDate;         
-          this.day = moment(forecastUnixDate).format('dddd');
-          this.daysList.push({
-            "unixTime" : forecastElement.dt,
-            "day" : this.day,
-            "temp" : parseInt(forecastElement.main.temp),
-            "description" : this.forecastWeather['description'],
-            "icon" :this.forecastWeather['icon']
-          });
-        }
+      //check if forecast and take midday temp
+      if (prevDay !== forecastDay && forecastTime > 11) {
+        prevDay = forecastDay;
+        this.day = moment(forecastUnixDate).format('dddd');
+        this.daysList.push({
+          "unixTime": forecastElement.dt,
+          "day": this.day,
+          "temp": parseInt(forecastElement.main.temp),
+          "description": this.forecastWeather['description'],
+          "icon": this.forecastWeather['icon']
+        });
       }
-    });
+    }
+    );
   }
 }

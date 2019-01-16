@@ -1,106 +1,106 @@
 <ion-header no-border-top no-border-bottom>
-    <ion-grid>
-        <ion-row>
-            <ion-col ion-item no-lines no-padding text-center col-8>
-                <ion-searchbar placeholder="Search a location" [(ngModel)]="locationInput" [showCancelButton]="shouldShowCancel" (change)="loadNewLocation($event)" (ionCancel)="onCancel($event)"></ion-searchbar>
-            </ion-col>
-            <ion-col ion-item no-lines no-padding text-center col-4>
-                <ion-title class="units-setting-title">Temperature Unit</ion-title>
-                <units-component class="units-setting" (unitTempEvent)="handleUnitChange($event)"></units-component>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col ion-item no-lines no-padding text-center col-8>
+        <ion-searchbar placeholder="Search a location" [(ngModel)]="locationInput" [showCancelButton]="shouldShowCancel"
+          (change)="loadNewLocation($event)" (ionCancel)="onCancel($event)"></ion-searchbar>
+      </ion-col>
+      <ion-col ion-item no-lines no-padding text-center col-4>
+        <units-component class="units-setting" (unitTempEvent)="handleUnitChange($event)"></units-component>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 
 <ion-content no-padding>
-    <ion-refresher (ionRefresh)="doRefresh($event)">
-    </ion-refresher>
-    <ion-grid>
-        <ion-row>
-            <ion-col col-12>
-                <h2 text-center>{{weatherData.name}}</h2>
-                <div text-center class="datetime-container">
-                    <div class="datetime">{{currentDateToDisplay}}</div>
-                </div>
-            </ion-col>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <h2 text-center>{{weatherData.name}}</h2>
+        <div text-center class="datetime-container">
+          <div class="datetime">{{currentDateToDisplay}}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-4>
+        <ion-row class="left-condition-container" margin-vertical margin-horizontal>
+          <ion-col col-12 class="condition-content">
+            <label>Humidity: </label>
+            <span>{{weatherDataMain.humidity}}%</span>
+          </ion-col>
+          <ion-col col-12 class="condition-content">
+            <label class="pressure">Pressure: </label>
+            <span>{{weatherDataMain.pressure}}hPa</span>
+          </ion-col>
         </ion-row>
-
-        <ion-row>
-            <ion-col col-4>
-                <ion-row class="left-condition-container" margin-vertical margin-horizontal>
-                    <ion-col col-12 class="condition-content">
-                        <label>Humidity: </label>
-                        <span>{{weatherDataMain.humidity}}%</span>
-                    </ion-col>
-                    <ion-col col-12 class="condition-content">
-                        <label class="pressure">Pressure: </label>
-                        <span>{{weatherDataMain.pressure}}hPa</span>
-                    </ion-col>
-                </ion-row>
-            </ion-col>
-            <ion-col col-4>
-                <div text-center class="middle-condition-container">
-                    <div class="condition-content">
-                        <div class="temperature" type="number">{{weatherDataMain.temp | number: '1.0-0'}}&deg;{{unitSymbol}}</div>
-                        <div class="description" *ngFor="let w of weatherData.weather">{{w.description}}</div>
-                        <div>
-                            <img src="http://openweathermap.org/img/w/{{weatherIcon}}" alt="icon">
-                        </div>
-                    </div>
-                </div>
-            </ion-col>
-            <ion-col col-4>
-                <ion-row class="right-condition-container" margin-vertical margin-horizontal>
-                    <ion-col col-12 class="condition-content">
-                        <label>Wind: </label>
-                        <span>{{weatherDataWind.speed}} {{windUnit}}</span>
-                    </ion-col>
-                    <ion-col col-12 class="condition-content">
-                        <label>Degree:</label>
-                        <span>{{weatherDataWind.deg}}&deg;</span>
-                    </ion-col>
-                </ion-row>
-            </ion-col>
+      </ion-col>
+      <ion-col col-4>
+        <div text-center class="middle-condition-container">
+          <div class="condition-content">
+            <div class="temperature" type="number">{{weatherDataMain.temp | number: '1.0-0'}}&deg;{{unitSymbol}}</div>
+            <div class="description" *ngFor="let w of weatherData.weather">{{w.description}}</div>
+            <div>
+              <img src="http://openweathermap.org/img/w/{{weatherIcon}}" alt="icon">
+            </div>
+          </div>
+        </div>
+      </ion-col>
+      <ion-col col-4>
+        <ion-row class="right-condition-container" margin-vertical margin-horizontal>
+          <ion-col col-12 class="condition-content">
+            <label>Wind: </label>
+            <span>{{weatherDataWind.speed}} {{windUnit}}</span>
+          </ion-col>
+          <ion-col col-12 class="condition-content">
+            <label>Degree:</label>
+            <span>{{weatherDataWind.deg}}&deg;</span>
+          </ion-col>
         </ion-row>
+      </ion-col>
+    </ion-row>
 
-        <h6 margin-top>Next Few Hours Forecast</h6>
-        <ion-scroll scrollX="true" class="center scroll-hourly">
-            <ion-row text-center nowrap *ngIf="isToday" margin-top>
-                <ion-col col-3 *ngFor="let todayForecast of hourlyList">
-                    <p no-margin no-padding>
-                        <span>{{todayForecast.hour}}</span>
-                    </p>
-                    <img no-margin no-padding src="http://openweathermap.org/img/w/{{todayForecast.icon}}.png">
-                    <p no-margin no-padding>
-                        <span>{{todayForecast.temp}}&deg;{{unitSymbol}}</span>
-                    </p>
-                </ion-col>
-            </ion-row>
-        </ion-scroll>
+    <h6 margin-top>Next Few Hours Forecast</h6>
+    <ion-scroll scrollX="true" class="center scroll-hourly">
+      <ion-row text-center nowrap *ngIf="isToday" margin-top>
+        <ion-col col-3 *ngFor="let todayForecast of hourlyList">
+          <p no-margin no-padding>
+            <span>{{todayForecast.hour}}</span>
+          </p>
+          <img no-margin no-padding src="http://openweathermap.org/img/w/{{todayForecast.icon}}.png">
+          <p no-margin no-padding>
+            <span>{{todayForecast.temp}}&deg;{{unitSymbol}}</span>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-scroll>
 
-        <h6 margin-top>Long Forecast</h6>
-        <ion-list class="long-forecast-container">
-            <ion-row *ngFor="let forecast of daysList">
-                <ion-col col-4>
-                    <div>
-                        <ion-item no-lines text-wrap>{{forecast.day}}</ion-item>
-                    </div>
-                </ion-col>
-                <ion-col col-4>
-                    <div text-center>
-                        <img no-margin no-padding src="http://openweathermap.org/img/w/{{forecast.icon}}.png">
-                        <ion-item text-center no-lines text-wrap>{{forecast.description}}</ion-item>
-                    </div>
-                </ion-col>
+    <h6 margin-top>Long Forecast</h6>
+    <ion-list class="long-forecast-container">
+      <ion-row *ngFor="let forecast of daysList">
+        <ion-col col-4>
+          <div>
+            <ion-item no-lines text-wrap>{{forecast.day}}</ion-item>
+          </div>
+        </ion-col>
+        <ion-col col-4>
+          <div text-center>
+            <img no-margin no-padding src="http://openweathermap.org/img/w/{{forecast.icon}}.png">
+            <ion-item text-center no-lines text-wrap>{{forecast.description}}</ion-item>
+          </div>
+        </ion-col>
 
-                <ion-col col-4>
-                    <div>
-                        <ion-item text-center no-lines><span class="icon"></span>{{forecast.temp}}&deg;{{unitSymbol}}</ion-item>
-                    </div>
-                </ion-col>
-            </ion-row>
-        </ion-list>
+        <ion-col col-4>
+          <div>
+            <ion-item text-center no-lines><span class="icon"></span>{{forecast.temp}}&deg;{{unitSymbol}}</ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-list>
 
-    </ion-grid>
+  </ion-grid>
 
 </ion-content>

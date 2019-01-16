@@ -10,23 +10,23 @@ import { Injectable } from '@angular/core';
 */
 @Injectable()
 export class LocationServiceProvider {
-private apiKey:string = 'AIzaSyBASqJYvjhPiczLrKsZLdBFAQkMtZ4_0iE';
-private baseUrl:string
+  private apiKey: string = 'AIzaSyBASqJYvjhPiczLrKsZLdBFAQkMtZ4_0iE';
+  private baseUrl: string
 
-constructor(public http: Http) {
-}
+  constructor(public http: Http) {
+  }
 
-queryLocation(locationText): Observable<any>{
-  this.baseUrl = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + locationText + "&inputtype=textquery" + "&fields=formatted_address,geometry"+ "&key=" + this.apiKey;    
-  // this.baseUrl ="https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=auckland%20new%20zealand&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyBASqJYvjhPiczLrKsZLdBFAQkMtZ4_0iE";
-  var response = this.http.get(this.baseUrl)
-                          .map( (res) => res.json())
-                          .catch(this.handleError);
-  return response;
-}
+  queryLocation(locationText): Observable<any> {
+    this.baseUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${locationText}&inputtype=textquery&fields=formatted_address,geometry&key=${this.apiKey}`;
+    // this.baseUrl ="https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=auckland%20new%20zealand&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyBASqJYvjhPiczLrKsZLdBFAQkMtZ4_0iE";
+    var response = this.http.get(this.baseUrl)
+      .map((res) => res.json())
+      .catch(this.handleError);
+    return response;
+  }
 
-private handleError(error : any): Observable<any>{
-  console.error('An error occured', error);
-  return Observable.throw(error.message || error);;
-}
+  private handleError(error: any): Observable<any> {
+    console.error('An error occured', error);
+    return Observable.throw(error.message || error);;
+  }
 }
