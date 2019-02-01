@@ -5,6 +5,7 @@ WeatherBoard is a cross platform app that helps user to get the current weather 
 
 ## Run the app
 Clone the app 
+
 `cd weatherboard`
 `npm install`
 `ionic serve`
