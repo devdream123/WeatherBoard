@@ -19,7 +19,7 @@ export class HomePage {
   public weatherData: Object = {};
   public weatherDataMain: Object = {};
   public weatherDataWind: Object = {};
-  public weatherIcon;
+  public weatherIcon: any;
   public forecastData: Object = {};
   public forecastList = [];
   public isToday: boolean;
@@ -27,15 +27,15 @@ export class HomePage {
   private forecastWeather: Object = {};
   private hourlyList = [];
   private daysList = [];
-  private hourly;
-  private day;
-  private now;
-  private errorMessage: any = '';
-  public latitude;
-  public longtitude;
-  public units = "metric";
-  public unitSymbol = "C";
-  public windUnit = "m/s";
+  private hourly: any;
+  private day: any;
+  private now: any;
+  public latitude: any;
+  public longtitude: any;
+  public units: String = "metric";
+  public unitSymbol: String = "C";
+  public windUnit: String = "m/s";
+  public errorMessage: any = '';
 
 
   constructor(public events: Events, public navCtrl: NavController, public loadingCtrl: LoadingController, private weatherService: WeatherServiceProvider, private forecastService: ForecastServiceProvider, private geolocation: Geolocation, private locationService: LocationServiceProvider) {
@@ -94,8 +94,8 @@ export class HomePage {
         console.log("new location resp -", resp);
         this.latitude = resp.candidates[0].geometry.location.lat;
         this.longtitude = resp.candidates[0].geometry.location.lng;
-        localStorage.setItem("new-lat", this.latitude);
-        localStorage.setItem("new-long", this.longtitude);
+        localStorage.setItem("new-lat", this.latitude.toString());
+        localStorage.setItem("new-long", this.longtitude.toString());
         window.location.reload();
       },
       (error) => {
@@ -144,11 +144,9 @@ export class HomePage {
   }
 
   private getCurrentWeatherByCoord(lat, lon, units) {
-    console.log("getCurrentWeather");
-    console.log("units: ", units);
-
     return this.weatherService.getWeatherByCoordinates(lat, lon, units).subscribe(
       result => {
+        console.log("result: ", result)
         this.weatherData = result;
         this.weatherDataMain = result.main;
         this.weatherDataWind = result.wind;
@@ -159,9 +157,6 @@ export class HomePage {
   }
 
   private getForecastByCoord(lat, lon, units) {
-    console.log("getCurrentForecast");
-    console.log("units: ", units);
-
     return this.forecastService.getForecastByCoord(lat, lon, units).subscribe(
       result => {
         this.forecastData = result.city;

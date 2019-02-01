@@ -1,13 +1,18 @@
 units-component {
-    ion-segment {
-        justify-content: flex-end;
+  ion-segment {
+    justify-content: flex-end;
+  }
+
+  .button {
+    background: transparent;
+    color: #FFF;
+    border: 1px solid #FFF;
+    border-radius: 20px;
+    margin-left: 5px;
+
+    &:hover:enabled {
+      background: #FFF;
+      color: #000;
     }
-    .button {
-        background: white;
-        color: black;
-        &:hover {
-            background: blue;
-            color: white;
-        }
-    }
+  }
 }

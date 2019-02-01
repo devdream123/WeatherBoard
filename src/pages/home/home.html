@@ -24,7 +24,8 @@
         </div>
       </ion-col>
     </ion-row>
-
+  </ion-grid>
+  <ion-grid>
     <ion-row>
       <ion-col col-4>
         <ion-row class="left-condition-container" margin-vertical margin-horizontal>
@@ -62,7 +63,8 @@
         </ion-row>
       </ion-col>
     </ion-row>
-
+  </ion-grid>
+  <ion-grid>
     <h6 margin-top>Next Few Hours Forecast</h6>
     <ion-scroll scrollX="true" class="center scroll-hourly">
       <ion-row text-center nowrap *ngIf="isToday" margin-top>
@@ -77,7 +79,8 @@
         </ion-col>
       </ion-row>
     </ion-scroll>
-
+  </ion-grid>
+  <ion-grid>
     <h6 margin-top>Long Forecast</h6>
     <ion-list class="long-forecast-container">
       <ion-row *ngFor="let forecast of daysList">
