@@ -8,3 +8,5 @@ Clone this repo
 `cd weatherboard`,
 `npm install`,
 `ionic serve`
+
+Download 'CORS' and set it ON to get data if data is not shown
