@@ -9,4 +9,4 @@ Clone this repo
 `npm install`,
 `ionic serve`
 
-Download 'CORS' and set it ON to get data if data is not shown
+Download 'CORS' in Chrome store and set it ON to get data if data is not shown
